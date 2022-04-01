@@ -9,23 +9,19 @@ import { NewsList } from '@/components/NewsList'
 import { BackTop } from 'antd'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { NewsInfoPage } from '@/components/NewsInfoPage'
+import { useDispatch, useSelector } from 'react-redux'
+import { getNews } from '@/store/newsReducer/sagaActions'
 
 export const App = () => {
+  const dispatch = useDispatch()
   const [state, setState] = useState([])
   const [news, setNews] = useState(
     JSON.parse(localStorage.getItem('news')),
   )
 
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     const response = await axios.get(
-  //       'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty',
-  //     )
-  //     setState(response.data.slice(0, 100))
-  //   }
-  //
-  //   fetchMyAPI()
-  // }, [])
+  useEffect(() => {
+    dispatch(getNews())
+  }, [])
 
   // useEffect(() => {
   //   async function fetchMyAPI() {
@@ -43,7 +39,6 @@ export const App = () => {
   //   fetchMyAPI()
   // }, [state])
 
-  console.log(news)
   return (
     <Layout>
       <Header

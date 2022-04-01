@@ -1,0 +1,2 @@
+export const NEWS_REDUCER_SET_NEWS = 'NEWS/SET_NEWS'
+export const NEWS_REDUCER_GET_NEWS = 'NEWS/GET_NEWS'
