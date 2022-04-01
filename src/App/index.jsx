@@ -6,6 +6,8 @@ import Layout, {
   Header,
 } from 'antd/es/layout/layout'
 import { NewsList } from '@/components/NewsList'
+import { BackTop } from 'antd'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
 export const App = () => {
   const [state, setState] = useState([])
@@ -13,16 +15,16 @@ export const App = () => {
     JSON.parse(localStorage.getItem('news')),
   )
 
-  useEffect(() => {
-    async function fetchMyAPI() {
-      const response = await axios.get(
-        'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty',
-      )
-      setState(response.data.slice(0, 100))
-    }
-
-    fetchMyAPI()
-  }, [])
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //     const response = await axios.get(
+  //       'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty',
+  //     )
+  //     setState(response.data.slice(0, 100))
+  //   }
+  //
+  //   fetchMyAPI()
+  // }, [])
 
   // useEffect(() => {
   //   async function fetchMyAPI() {
@@ -48,11 +50,23 @@ export const App = () => {
         Hacker News
       </Header>
       <Content>
-        <NewsList news={news} />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => <NewsList news={news} />}
+          />
+          <Route
+            path="/404"
+            render={() => <h1 style={{textAlign: 'center'}}>page not found</h1>}
+          />
+          <Redirect from="*" to="/404" />
+        </Switch>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         Footer
       </Footer>
+      <BackTop />
     </Layout>
   )
 }
