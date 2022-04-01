@@ -5,6 +5,7 @@ import Layout, {
   Footer,
   Header,
 } from 'antd/es/layout/layout'
+import { NewsList } from '@/components/NewsList'
 
 export const App = () => {
   const [state, setState] = useState([])
@@ -45,13 +46,11 @@ export const App = () => {
           Hacker News
         </Header>
         <Content>
-          <ul>
-            {news.map(({ by }) => (
-              <li key={by}>name: {by}</li>
-            ))}
-          </ul>
+          <NewsList news={news} />
         </Content>
-        <Footer style={{textAlign: 'center'}}>Footer</Footer>
+        <Footer style={{ textAlign: 'center' }}>
+          Footer
+        </Footer>
       </Layout>
     </div>
   )
