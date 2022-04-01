@@ -12,6 +12,7 @@ export const NewsList = ({ news }) => {
           time={time}
           author={by}
           likes={score}
+          id={id}
         />
       ))}
     </Card>
