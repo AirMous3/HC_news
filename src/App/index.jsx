@@ -9,7 +9,9 @@ import { NewsList } from '@/components/NewsList'
 
 export const App = () => {
   const [state, setState] = useState([])
-  const [news, setNews] = useState([])
+  const [news, setNews] = useState(
+    JSON.parse(localStorage.getItem('news')),
+  )
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -22,36 +24,35 @@ export const App = () => {
     fetchMyAPI()
   }, [])
 
-  useEffect(() => {
-    async function fetchMyAPI() {
-      const news = []
-      for (let i = 0; i < state.length; i++) {
-        const response = await axios.get(
-          `https://hacker-news.firebaseio.com/v0/item/${state[i]}.json?print=pretty`,
-        )
-        news.push(response.data)
-      }
-      setNews(news)
-    }
-
-    fetchMyAPI()
-  }, [state])
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //     const news = []
+  //     for (let i = 0; i < state.length; i++) {
+  //       const response = await axios.get(
+  //         `https://hacker-news.firebaseio.com/v0/item/${state[i]}.json?print=pretty`,
+  //       )
+  //       news.push(response.data)
+  //     }
+  //     setNews(news)
+  //     localStorage.setItem('news', JSON.stringify(news))
+  //   }
+  //
+  //   fetchMyAPI()
+  // }, [state])
 
   console.log(news)
   return (
-    <div>
-      <Layout>
-        <Header
-          style={{ color: 'white', textAlign: 'center' }}>
-          Hacker News
-        </Header>
-        <Content>
-          <NewsList news={news} />
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Footer
-        </Footer>
-      </Layout>
-    </div>
+    <Layout>
+      <Header
+        style={{ color: 'white', textAlign: 'center' }}>
+        Hacker News
+      </Header>
+      <Content>
+        <NewsList news={news} />
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Footer
+      </Footer>
+    </Layout>
   )
 }
