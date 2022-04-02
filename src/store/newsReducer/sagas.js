@@ -5,7 +5,13 @@ import {NEWS_REDUCER_GET_NEWS} from './constants'
 
 export function* getNewsWorkerSaga() {
   const res = yield call(hackerAPI.allNews)
-  yield put(setNews(res))
+  const news = []
+  for (let i = 0; i < res.length; i++) {
+    const response = yield call(hackerAPI.oneNews,res[i])
+    news.push(response)
+  }
+  localStorage.setItem('news',JSON.stringify(news))
+  yield put(setNews(news))
 }
 
 export function* newsWatcherSaga() {

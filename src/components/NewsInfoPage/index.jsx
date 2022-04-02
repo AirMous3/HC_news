@@ -1,34 +1,35 @@
-import React, {useLayoutEffect, useState} from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Card } from 'antd'
 import { CommentComponent } from '@/components/Comment'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCurrentNews } from '@/store/currentNewsReducer/sagaActions'
+import { getCurrentTime } from '@/helpers/getCurrentTime'
 
-export const NewsInfoPage = ({
-  author,
-  time,
-  title,
-  link,
-}) => {
-  // const [state, setState] = useState()
-  // const { id } = useParams()
-  // useLayoutEffect(() => {
-  //   async function fetchMyAPI() {
-  //     const result = await axios.get(
-  //       `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`,
-  //     )
-  //     setState(result.data)
-  //   }
-  //
-  //   fetchMyAPI()
-  // }, [id])
+export const NewsInfoPage = () => {
+  const dispatch = useDispatch()
+
+  const { id } = useParams()
+
+  const currentNews = useSelector(
+    state => state.currentNews,
+  )
+  const { by, kids, time, url, title } = currentNews
+
+  const currentTime = getCurrentTime(time)
+
+  useLayoutEffect(() => {
+    dispatch(getCurrentNews(id))
+  }, [id])
+
+  console.log(currentNews)
   return (
     <Card
       style={{ marginTop: 16 }}
       type="inner"
-      title={`${author} : ${time}`}>
+      title={`${by} : ${currentTime}`}>
       <h2>{title}</h2>
-      <a href={link}>{link}</a>
+      <a href={url}>{url}</a>
       <Card style={{ marginTop: 16 }}>
         <Card>
           <CommentComponent />

@@ -18,26 +18,10 @@ export const App = () => {
   const [news, setNews] = useState(
     JSON.parse(localStorage.getItem('news')),
   )
-
-  useEffect(() => {
-    dispatch(getNews())
-  }, [])
-
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     const news = []
-  //     for (let i = 0; i < state.length; i++) {
-  //       const response = await axios.get(
-  //         `https://hacker-news.firebaseio.com/v0/item/${state[i]}.json?print=pretty`,
-  //       )
-  //       news.push(response.data)
-  //     }
-  //     setNews(news)
-  //     localStorage.setItem('news', JSON.stringify(news))
-  //   }
   //
-  //   fetchMyAPI()
-  // }, [state])
+  // useEffect(() => {
+  //   dispatch(getNews())
+  // }, [])
 
   return (
     <Layout>

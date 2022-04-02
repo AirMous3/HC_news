@@ -3,16 +3,20 @@ import {
   combineReducers,
   createStore,
 } from 'redux'
-import { appReducer } from '@/store/appReducer/appReducer'
 import createSagaMiddleware from 'redux-saga'
-import { newsReducer } from '@/store/newsReducer/newsReducer'
 import { all } from 'redux-saga/effects'
-import {newsWatcherSaga} from '@/store/newsReducer/sagas'
+import { newsWatcherSaga } from '@/store/newsReducer/sagas'
+import { currentNewsReducer } from '@/store/currentNewsReducer'
+import { appReducer } from '@/store/appReducer'
+import { newsReducer } from '@/store/newsReducer'
+import { currentNewsWatcherSaga } from '@/store/currentNewsReducer/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
+
 const rootReducer = combineReducers({
   app: appReducer,
   news: newsReducer,
+  currentNews: currentNewsReducer,
 })
 export const store = createStore(
   rootReducer,
@@ -22,5 +26,5 @@ export const store = createStore(
 sagaMiddleware.run(rootSaga)
 
 function* rootSaga() {
-  yield all([newsWatcherSaga()])
+  yield all([newsWatcherSaga(), currentNewsWatcherSaga()])
 }
