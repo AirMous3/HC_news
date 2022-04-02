@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react'
 import axios from 'axios'
 import Layout, {
   Content,
@@ -9,19 +13,27 @@ import { NewsList } from '@/components/NewsList'
 import { BackTop } from 'antd'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { NewsInfoPage } from '@/components/NewsInfoPage'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getNews } from '@/store/newsReducer/sagaActions'
+import { ONE_MINUTE } from '@/constants/intervalTime'
 
 export const App = () => {
   const dispatch = useDispatch()
-  const [state, setState] = useState([])
   const [news, setNews] = useState(
     JSON.parse(localStorage.getItem('news')),
   )
-  //
-  // useEffect(() => {
-  //   dispatch(getNews())
-  // }, [])
+
+  useLayoutEffect(() => {
+    dispatch(getNews())
+  }, [])
+
+  useEffect(() => {
+    const timeId = setInterval(() => {
+      dispatch(getNews())
+    }, ONE_MINUTE)
+
+    return () => clearInterval(timeId)
+  })
 
   return (
     <Layout>
