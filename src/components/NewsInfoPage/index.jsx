@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react'
-import { Card, Spin } from 'antd'
+import { Card } from 'antd'
 import { CommentComponent } from '@/components/Comment'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,6 +8,7 @@ import { getCurrentTime } from '@/helpers/getCurrentTime'
 import { LOADING } from '@/constants/appStatus'
 import { getComments } from '@/store/commentsReducer/sagaActions'
 import { ONE_MINUTE } from '@/constants/intervalTime'
+import { Preloader } from '@/components/Preloader'
 
 export const NewsInfoPage = () => {
   const dispatch = useDispatch()
@@ -42,13 +43,7 @@ export const NewsInfoPage = () => {
     return () => clearInterval(timeId)
   })
 
-  if (status === LOADING)
-    return (
-      <Spin
-        size="large"
-        style={{ marginTop: '20px', marginLeft: '20px' }}
-      />
-    )
+  if (status === LOADING) return <Preloader />
 
   return (
     <Card
