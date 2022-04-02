@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react'
-import { Card } from 'antd'
+import { Button, Card } from 'antd'
 import { CommentComponent } from '@/components/Comment'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +29,9 @@ export const NewsInfoPage = () => {
 
   const currentTime = getCurrentTime(time)
 
+  const handleCommentsUpdate = () =>
+    dispatch(getComments(comments))
+
   useLayoutEffect(() => {
     dispatch(getCurrentNews(id))
   }, [id])
@@ -52,7 +55,14 @@ export const NewsInfoPage = () => {
       title={`${by} : ${currentTime}`}>
       <h2>{title}</h2>
       <a href={url}>{url}</a>
-      <Card style={{ marginTop: 16 }} title="Comments">
+      <Card
+        style={{ marginTop: 16 }}
+        title="Comments"
+        extra={
+          <Button onClick={handleCommentsUpdate}>
+            Update Comments
+          </Button>
+        }>
         {currentComments
           ? currentComments.map(
               ({ by, id, text, time }) => (
