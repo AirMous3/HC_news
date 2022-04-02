@@ -10,6 +10,7 @@ import { currentNewsReducer } from '@/store/currentNewsReducer'
 import { appReducer } from '@/store/appReducer'
 import { newsReducer } from '@/store/newsReducer'
 import { currentNewsWatcherSaga } from '@/store/currentNewsReducer/sagas'
+import {commentsReducer} from '@/store/commentsReducer'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   app: appReducer,
   news: newsReducer,
   currentNews: currentNewsReducer,
+  comments: commentsReducer,
 })
 export const store = createStore(
   rootReducer,

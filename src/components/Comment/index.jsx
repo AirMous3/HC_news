@@ -1,7 +1,9 @@
 import {Avatar, Comment, Tooltip} from 'antd'
 import React from 'react'
+import {getCurrentTime} from '@/helpers/getCurrentTime'
 
 export const CommentComponent = ({author, comment, time}) => {
+  const currentTime = getCurrentTime(time)
   return (
     <Comment
       author={<a>{author}</a>}
@@ -17,8 +19,8 @@ export const CommentComponent = ({author, comment, time}) => {
         </p>
       }
       datetime={
-        <Tooltip title={new Date().toLocaleDateString()}>
-          <span>{new Date().toLocaleDateString()}</span>
+        <Tooltip title={currentTime}>
+          <span>{currentTime}</span>
         </Tooltip>
       }
     />

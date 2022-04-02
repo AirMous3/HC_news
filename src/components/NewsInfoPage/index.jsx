@@ -14,7 +14,9 @@ export const NewsInfoPage = () => {
   const currentNews = useSelector(
     state => state.currentNews,
   )
-  const { by, kids, time, url, title } = currentNews
+  const comments = useSelector(state => state.comments)
+
+  const { by, time, url, title } = currentNews
 
   const currentTime = getCurrentTime(time)
 
@@ -22,7 +24,6 @@ export const NewsInfoPage = () => {
     dispatch(getCurrentNews(id))
   }, [id])
 
-  console.log(currentNews)
   return (
     <Card
       style={{ marginTop: 16 }}
@@ -30,16 +31,18 @@ export const NewsInfoPage = () => {
       title={`${by} : ${currentTime}`}>
       <h2>{title}</h2>
       <a href={url}>{url}</a>
-      <Card style={{ marginTop: 16 }}>
-        <Card>
-          <CommentComponent />
-        </Card>
-        <Card>
-          <CommentComponent />
-        </Card>
-        <Card>
-          <CommentComponent />
-        </Card>
+      <Card style={{ marginTop: 16 }} title="Comments">
+        {comments
+          ? comments.map(({ by, id, text, time }) => (
+              <Card key={id}>
+                <CommentComponent
+                  time={time}
+                  comment={text}
+                  author={by}
+                />
+              </Card>
+            ))
+          : null}
       </Card>
     </Card>
   )
