@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { CURRENT_REDUCER_GET_CURRENT_NEWS } from './constants'
+import { CURRENT_SAGA_GET_CURRENT_NEWS } from './constants'
 import { hackerAPI } from '@/api/api'
 import { setCurrentNews } from '@/store/currentNewsReducer/actions'
 import { setAppStatus } from '@/store/appReducer/actions'
@@ -17,7 +17,7 @@ export function* getCurrentNewsWorkerSaga(action) {
 
 export function* currentNewsWatcherSaga() {
   yield takeEvery(
-    CURRENT_REDUCER_GET_CURRENT_NEWS,
+    CURRENT_SAGA_GET_CURRENT_NEWS,
     getCurrentNewsWorkerSaga,
   )
 }
