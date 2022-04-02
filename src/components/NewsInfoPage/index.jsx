@@ -1,10 +1,11 @@
 import React, { useLayoutEffect } from 'react'
-import { Card } from 'antd'
+import { Card, Spin } from 'antd'
 import { CommentComponent } from '@/components/Comment'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentNews } from '@/store/currentNewsReducer/sagaActions'
 import { getCurrentTime } from '@/helpers/getCurrentTime'
+import { LOADING } from '@/constants/appStatus'
 
 export const NewsInfoPage = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ export const NewsInfoPage = () => {
     state => state.currentNews,
   )
   const comments = useSelector(state => state.comments)
+  const status = useSelector(state => state.app.status)
 
   const { by, time, url, title } = currentNews
 
@@ -23,6 +25,8 @@ export const NewsInfoPage = () => {
   useLayoutEffect(() => {
     dispatch(getCurrentNews(id))
   }, [id])
+
+  if (status === LOADING) return <Spin size="large" style={{marginTop: '20px', marginLeft: '20px'}} />
 
   return (
     <Card
