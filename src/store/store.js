@@ -10,7 +10,8 @@ import { currentNewsReducer } from '@/store/currentNewsReducer'
 import { appReducer } from '@/store/appReducer'
 import { newsReducer } from '@/store/newsReducer'
 import { currentNewsWatcherSaga } from '@/store/currentNewsReducer/sagas'
-import {commentsReducer} from '@/store/commentsReducer'
+import { commentsReducer } from '@/store/commentsReducer'
+import { commentsWatcherSaga } from '@/store/commentsReducer/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -28,5 +29,9 @@ export const store = createStore(
 sagaMiddleware.run(rootSaga)
 
 function* rootSaga() {
-  yield all([newsWatcherSaga(), currentNewsWatcherSaga()])
+  yield all([
+    newsWatcherSaga(),
+    currentNewsWatcherSaga(),
+    commentsWatcherSaga(),
+  ])
 }

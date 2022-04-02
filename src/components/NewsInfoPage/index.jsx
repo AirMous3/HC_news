@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { Card, Spin } from 'antd'
 import { CommentComponent } from '@/components/Comment'
 import { useParams } from 'react-router-dom'
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentNews } from '@/store/currentNewsReducer/sagaActions'
 import { getCurrentTime } from '@/helpers/getCurrentTime'
 import { LOADING } from '@/constants/appStatus'
+import { getComments } from '@/store/commentsReducer/sagaActions'
+import { ONE_MINUTE } from '@/constants/intervalTime'
 
 export const NewsInfoPage = () => {
   const dispatch = useDispatch()
@@ -15,8 +17,12 @@ export const NewsInfoPage = () => {
   const currentNews = useSelector(
     state => state.currentNews,
   )
-  const comments = useSelector(state => state.comments)
+  const currentComments = useSelector(
+    state => state.comments,
+  )
   const status = useSelector(state => state.app.status)
+
+  const comments = currentNews.kids
 
   const { by, time, url, title } = currentNews
 
@@ -26,7 +32,23 @@ export const NewsInfoPage = () => {
     dispatch(getCurrentNews(id))
   }, [id])
 
-  if (status === LOADING) return <Spin size="large" style={{marginTop: '20px', marginLeft: '20px'}} />
+  useEffect(() => {
+    let timeId
+    if (comments) {
+      timeId = setInterval(() => {
+        dispatch(getComments(comments))
+      }, ONE_MINUTE)
+    }
+    return () => clearInterval(timeId)
+  })
+
+  if (status === LOADING)
+    return (
+      <Spin
+        size="large"
+        style={{ marginTop: '20px', marginLeft: '20px' }}
+      />
+    )
 
   return (
     <Card
@@ -36,16 +58,18 @@ export const NewsInfoPage = () => {
       <h2>{title}</h2>
       <a href={url}>{url}</a>
       <Card style={{ marginTop: 16 }} title="Comments">
-        {comments
-          ? comments.map(({ by, id, text, time }) => (
-              <Card key={id}>
-                <CommentComponent
-                  time={time}
-                  comment={text}
-                  author={by}
-                />
-              </Card>
-            ))
+        {currentComments
+          ? currentComments.map(
+              ({ by, id, text, time }) => (
+                <Card key={id}>
+                  <CommentComponent
+                    time={time}
+                    comment={text}
+                    author={by}
+                  />
+                </Card>
+              ),
+            )
           : null}
       </Card>
     </Card>
